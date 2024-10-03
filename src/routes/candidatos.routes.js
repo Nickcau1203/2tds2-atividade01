@@ -4,7 +4,7 @@ const candidatosRoutes = Router();
 
 let candidatos = [
    {
-    id: Math.random() * 1000000,
+    id: Math.floor(Math.random() * 1000000),
     name: "Alice",
     partido: "PSD",
     idade: 42,
@@ -21,24 +21,55 @@ candidatosRoutes.get("/", (req, res) => {
     return res.status(200).json(candidatos)
 });
 
-
-
-
-
-
-
-
-//Rota para criar uma nova emoção
 candidatosRoutes.post("/", (req, res) => {
-    const { nome, cor } = req.body
-    const novaEmocao = {
-        id: emocoes.length + 1,
-        nome: nome,
-        cor: cor
+    const {
+        nome,
+        partido,
+        idade,
+        segundo,
+        propostas,
+    } = req.body;
+
+    //Validação dos campos nome e partido
+    if (!nome || !partido) {
+        return res.status(400).send({
+            message: "O nome ou o partido não foi preenchido, crianças aleatórias",
+        });
     }
-    emocoes.push(novaEmocao)
-    return res.status(201).send( emocoes )
+
+    if (idade < 18) {
+        return res.status(400).send({
+            message: "A idade não pode ser menor que 18 anos",
+        });
+    }
+
+    const novoCandidato = {
+        id: Math.floor(Math.random() * 1000000),
+        nome,
+        partido,
+        idade,
+        segundo,
+        propostas,
+    }
+    candidatos.push(novoCandidato);
+
+    return res.status(201).json({
+        message: "Candidato cadastro com sucesso!",
+        novoCandidato,
+  });
+
 });
+
+    
+
+
+
+
+
+
+
+
+
 
 //Rota para buscar uma emoção pelo id
 candidatosRoutes.get("/:id", (req, res) => {
