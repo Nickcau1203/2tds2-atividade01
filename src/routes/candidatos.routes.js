@@ -60,35 +60,22 @@ candidatosRoutes.post("/", (req, res) => {
 
 });
 
-    
-
-
-
-
-
-
-
-
-
-
-//Rota para buscar uma emoção pelo id
 candidatosRoutes.get("/:id", (req, res) => {
     const { id } = req.params;
 
-    //console.log(id);
-    const emocao = emocoes.find((emotion) => emotion.id == id ) 
+    const candidato = candidatos.find((politico) => politico.id == id ) 
 
-    if (!emocao) {  
-        return res.status(404).send({
-            message: "Emoção não encontrada!",
-        });
+    if (!candidato) {  
+        return res.status(404).send({message: "Candidato não encontrado!"});
     }
 
-return res.status(200).send({
-   message: "Emoção encontrada",
-   emocao,   
-  });
+return res.status(200).json(candidato); 
 });
+
+
+
+
+
 
 candidatosRoutes.put("/:id", () => {
     const { id } = req.params;
